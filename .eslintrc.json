@@ -37,13 +37,5 @@
         ]
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["*.stories.tsx"],
-      "rules": {
-        "@typescript-eslint/await-thenable": "off"
-      }
-    }
-  ]
+  }
 }
