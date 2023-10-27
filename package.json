@@ -54,6 +54,9 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "*.{ts, tsx}": "eslint --cache --cache-location .next/cache/eslint/ --fix"
+    "*.{ts,tsx}": [
+      "eslint --cache --cache-location .next/cache/eslint/ --fix",
+      "prettier --write"
+    ]
   }
 }
