@@ -13,4 +13,11 @@ const preview: Preview = {
   },
 }
 
+// const theme = require('../path/to/your/theme')
+// export const parameters = {
+//   chakra: {
+//     theme,
+//   },
+// }
+
 export default preview
