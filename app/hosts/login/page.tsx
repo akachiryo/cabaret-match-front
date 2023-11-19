@@ -8,7 +8,7 @@ import CustomInput from '@/components/elements/CustomInput'
 
 import api from '@/utils/api'
 
-interface SignupData {
+interface LoginData {
   email: string
   password: string
 }
@@ -18,16 +18,15 @@ export const Signup: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupData>()
+  } = useForm<LoginData>()
 
-  const handleSignup = (data: SignupData) => {
+  const handleLogin = (data: LoginData) => {
     api
-      .post('/api/v1/hosts', {
+      .post('/api/v1/hosts/login', {
         email: data.email,
         password: data.password,
       })
       .then((response) => {
-        console.log(response)
         setCookie('token', response.data)
       })
       .catch((error) => {
@@ -39,9 +38,9 @@ export const Signup: React.FC = () => {
     <VStack>
       <Box w={{ base: '80vw', sm: '50vw', lg: '20vw' }} mt="20vh">
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={handleSubmit(handleSignup)} noValidate>
+        <form onSubmit={handleSubmit(handleLogin)} noValidate>
           <Heading mb={16} fontSize="4xl" fontWeight="bold" textAlign="center">
-            Sign up
+            Login
           </Heading>
           <CustomInput
             name="email"
@@ -84,13 +83,13 @@ export const Signup: React.FC = () => {
             fontWeight="bold"
             type="submit"
           >
-            Sign up
+            Login
           </Button>
         </form>
         <Text mt={4} textAlign="center">
           New around here?{' '}
           <Text as="span" color="blue.500" fontWeight="bold" cursor="pointer">
-            Login
+            Sign Up
           </Text>
         </Text>
       </Box>

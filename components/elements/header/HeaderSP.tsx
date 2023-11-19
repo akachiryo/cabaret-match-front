@@ -12,7 +12,10 @@ import {
   CloseButton,
   Flex,
   FlexProps,
+  Avatar,
 } from '@chakra-ui/react'
+import { getCookie } from 'cookies-next'
+import { useEffect, useState } from 'react'
 import {
   FiHome,
   FiTrendingUp,
@@ -50,6 +53,13 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function HeaderSP() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    // Cookieからトークンを取得
+    const token = getCookie('token')
+    setIsLoggedIn(!!token)
+  }, [])
   return (
     <>
       <Box>
@@ -66,7 +76,11 @@ export default function HeaderSP() {
           </DrawerContent>
         </Drawer>
         {/* mobilenav */}
-        <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+        <MobileNav
+          display={{ base: 'flex', md: 'none' }}
+          onOpen={onOpen}
+          isLoggedIn={isLoggedIn}
+        />
         <Box ml={{ base: 0, md: 60 }} p="4">
           {/* Content */}
         </Box>
@@ -147,7 +161,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, isLoggedIn, ...rest }: MobileProps) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -163,12 +177,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
         Logo
       </Text>
-      <IconButton
-        variant="outline"
-        onClick={onOpen}
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
+      {isLoggedIn ? (
+        <IconButton
+          variant="outline"
+          onClick={onOpen}
+          aria-label="open menu"
+          icon={<FiMenu />}
+        />
+      ) : (
+        <Avatar size={'sm'} display={{ base: 'flex', md: 'none' }} />
+      )}
     </Flex>
   )
 }
