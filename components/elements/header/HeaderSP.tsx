@@ -14,8 +14,6 @@ import {
   FlexProps,
   Avatar,
 } from '@chakra-ui/react'
-import { getCookie } from 'cookies-next'
-import { useEffect, useState } from 'react'
 import {
   FiHome,
   FiTrendingUp,
@@ -24,6 +22,9 @@ import {
   FiSettings,
   FiMenu,
 } from 'react-icons/fi'
+
+import { useUserStore } from '@/stores/UserStore'
+import { useStore } from '@/stores/UseStore'
 
 interface NavItemProps extends FlexProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,13 +54,11 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function HeaderSP() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  useEffect(() => {
-    // Cookieからトークンを取得
-    const token = getCookie('token')
-    setIsLoggedIn(!!token)
-  }, [])
+  const role = useStore(useUserStore, (state) => state.role)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return
+  const resetRole = useUserStore((state) => state.resetRole)
+
   return (
     <>
       <Box>
@@ -79,7 +78,7 @@ export default function HeaderSP() {
         <MobileNav
           display={{ base: 'flex', md: 'none' }}
           onOpen={onOpen}
-          isLoggedIn={isLoggedIn}
+          role={role}
         />
         <Box ml={{ base: 0, md: 60 }} p="4">
           {/* Content */}
@@ -161,7 +160,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
-const MobileNav = ({ onOpen, isLoggedIn, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, role, ...rest }: MobileProps) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -177,7 +176,7 @@ const MobileNav = ({ onOpen, isLoggedIn, ...rest }: MobileProps) => {
       <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
         Logo
       </Text>
-      {isLoggedIn ? (
+      {role ? (
         <IconButton
           variant="outline"
           onClick={onOpen}

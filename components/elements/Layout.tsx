@@ -8,15 +8,11 @@ import Header from '@/components/elements/header/Header'
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Flex
-        position={['fixed', 'fixed', 'fixed', 'static']}
-        flexDirection="column"
-        top="0"
-        width="100vw"
-        zIndex="1000"
-      >
+      <Flex minHeight="100vh" flexDirection="column">
         <Header />
-        {children}
+        <Flex flex="1" flexDirection="column" justifyContent="center">
+          {children}
+        </Flex>
         <Footer />
       </Flex>
     </>

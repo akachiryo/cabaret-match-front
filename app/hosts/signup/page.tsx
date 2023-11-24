@@ -2,10 +2,12 @@
 
 import { Button, VStack, Heading, Text, Box } from '@chakra-ui/react'
 import { setCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 import CustomInput from '@/components/elements/CustomInput'
 
+import { useUserStore } from '@/stores/UserStore'
 import api from '@/utils/api'
 
 interface SignupData {
@@ -14,6 +16,9 @@ interface SignupData {
 }
 
 export const Signup: React.FC = () => {
+  const router = useRouter()
+  const updateRole = useUserStore((state) => state.updateRole)
+
   const {
     register,
     handleSubmit,
@@ -27,8 +32,11 @@ export const Signup: React.FC = () => {
         password: data.password,
       })
       .then((response) => {
-        console.log(response)
-        setCookie('token', response.data)
+        console.log(response.data)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        setCookie('token', response.data.token)
+        updateRole('host')
+        router.push('/')
       })
       .catch((error) => {
         console.error('Error during the signup request:', error)
@@ -37,7 +45,7 @@ export const Signup: React.FC = () => {
 
   return (
     <VStack>
-      <Box w={{ base: '80vw', sm: '50vw', lg: '20vw' }} mt="20vh">
+      <Box w={{ base: '80vw', sm: '50vw', lg: '20vw' }}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(handleSignup)} noValidate>
           <Heading mb={16} fontSize="4xl" fontWeight="bold" textAlign="center">

@@ -13,8 +13,7 @@ import {
   useColorModeValue,
   Icon,
 } from '@chakra-ui/react'
-import { getCookie } from 'cookies-next'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   FiHome,
   FiTrendingUp,
@@ -23,7 +22,11 @@ import {
   FiSettings,
   FiUserPlus,
   FiLogIn,
+  FiLogOut,
 } from 'react-icons/fi'
+
+import { useUserStore } from '@/stores/UserStore'
+import { useStore } from '@/stores/UseStore'
 
 interface LinkItemProps {
   name: string
@@ -51,13 +54,18 @@ const LinkItems: Array<LinkItemProps> = [
 ]
 
 export default function HeaderPC() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+  const role = useStore(useUserStore, (state) => state.role)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return
+  const resetRole = useUserStore((state) => state.resetRole)
 
-  useEffect(() => {
-    // Cookieからトークンを取得
-    const token = getCookie('token')
-    setIsLoggedIn(!!token)
-  }, [])
+  const navigateLogin = () => {
+    router.push('/hosts/login')
+  }
+
+  const navigateSignup = () => {
+    router.push('/hosts/signup')
+  }
 
   return (
     <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -79,7 +87,7 @@ export default function HeaderPC() {
             cursor={'pointer'}
             minW={0}
           >
-            {isLoggedIn ? (
+            {role ? (
               <Avatar
                 size={'sm'}
                 src={
@@ -91,15 +99,21 @@ export default function HeaderPC() {
             )}
           </MenuButton>
           <MenuList>
-            <MenuItem>
+            <MenuItem onClick={navigateSignup}>
               {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
               <Icon as={FiUserPlus} mr="2" fontSize="16"></Icon>
               Sign up
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={navigateLogin}>
               {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
               <Icon as={FiLogIn} mr="2" fontSize="16"></Icon>
               Login
+            </MenuItem>
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+            <MenuItem onClick={resetRole}>
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+              <Icon as={FiLogOut} mr="2" fontSize="16"></Icon>
+              Logout
             </MenuItem>
           </MenuList>
         </Menu>

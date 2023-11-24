@@ -6,7 +6,7 @@ import React from 'react'
 export default function Home() {
   return (
     <>
-      <Flex direction="column" align="center" height="80vh"></Flex>
+      <Flex direction="column" align="center"></Flex>
     </>
   )
 }
