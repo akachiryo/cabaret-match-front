@@ -1,6 +1,11 @@
 'use client'
 
-import { Input, FormControl, FormErrorMessage } from '@chakra-ui/react'
+import {
+  Input,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+} from '@chakra-ui/react'
 import { FC } from 'react'
 import { UseFormRegisterReturn, FieldErrors } from 'react-hook-form'
 
@@ -10,6 +15,7 @@ interface CustomInputProps {
   type: string
   register: UseFormRegisterReturn
   errors: FieldErrors
+  label: string
 }
 
 const CustomInput: FC<CustomInputProps> = ({
@@ -18,6 +24,7 @@ const CustomInput: FC<CustomInputProps> = ({
   name,
   register,
   errors,
+  label,
 }) => {
   let validationRules: Record<string, unknown> = {}
 
@@ -32,7 +39,7 @@ const CustomInput: FC<CustomInputProps> = ({
         },
       }
       break
-    // 他の type に対するバリデーションルールもここに追加できます
+
     default:
       validationRules = {}
       break
@@ -45,15 +52,16 @@ const CustomInput: FC<CustomInputProps> = ({
         mb={{ base: 4, md: 8 }}
         isInvalid={Boolean(errors[name]?.message)}
       >
+        <FormLabel>{label}</FormLabel>
         <Input
           borderColor="#FFFFFF"
-          rounded="full"
           boxShadow="md"
           mb={errors[name] ? 0 : 3}
           placeholder={placeholder}
           type={type}
           {...register}
           name={name}
+          w="full"
         />
         {errors[name] && (
           <FormErrorMessage fontSize="xs" ml={4}>

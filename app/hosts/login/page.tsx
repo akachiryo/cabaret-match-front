@@ -51,12 +51,13 @@ export const Signup: React.FC = () => {
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(handleLogin)} noValidate>
           <Heading mb={16} fontSize="4xl" fontWeight="bold" textAlign="center">
-            Login
+            Profile
           </Heading>
           <CustomInput
             name="email"
             placeholder="Email address"
             type="email"
+            label="email"
             register={register('email', {
               required: '必須項目です',
               maxLength: {
@@ -74,6 +75,7 @@ export const Signup: React.FC = () => {
             name="password"
             placeholder="Password"
             type="password"
+            label="password"
             register={register('password', {
               required: '必須項目です',
               minLength: {

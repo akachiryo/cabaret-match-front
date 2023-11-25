@@ -10,7 +10,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Flex minHeight="100vh" flexDirection="column">
         <Header />
-        <Flex flex="1" flexDirection="column" justifyContent="center">
+        <Flex
+          flex="1"
+          flexDirection="column"
+          justifyContent={{ base: 'normal', md: 'center' }}
+        >
           {children}
         </Flex>
         <Footer />
